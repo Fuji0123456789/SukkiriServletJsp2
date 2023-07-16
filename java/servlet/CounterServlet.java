@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/CounterServlet")
 public class CounterServlet extends HttpServlet {
   private static final long serialVersionUID = 1L;
+  private Integer count; // 訪問回数
 
   public void init(ServletConfig config) throws ServletException {
 
@@ -21,9 +21,7 @@ public class CounterServlet extends HttpServlet {
 
     // 訪問回数を表すIntegerインスタンスを新規作成し
     // アプリケーションスコープに保存
-    Integer count = 0;
-    ServletContext application = config.getServletContext();
-    application.setAttribute("count", count);
+    count = 0;
 
     System.out.println("init()が実行されました");
   }
@@ -32,11 +30,8 @@ public class CounterServlet extends HttpServlet {
       HttpServletResponse response)
       throws ServletException, IOException {
 
-    // アプリケーションスコープに保存された訪問回数を増加
-    ServletContext application = this.getServletContext();
-    Integer count = (Integer) application.getAttribute("count");
+    // 訪問回数を増加
     count++;
-    application.setAttribute("count", count);
 
     // HTMLを出力
     response.setContentType("text/html; charset=UTF-8");
